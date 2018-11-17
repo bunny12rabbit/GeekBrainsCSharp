@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MyMethods;
 
 namespace _2DimenArray
 {
@@ -17,6 +18,89 @@ namespace _2DimenArray
 
     public class TwoDimenArray
     {
+        int[,] a;
+        int min, max;
+
+        public TwoDimenArray(int n, int min, int max)
+        {
+            a = new int[n, n];
+            Random rnd = new Random();
+            for (int i = 0; i < n; i++)
+                for (int j = 0; j < n; j++)
+                    a[i, j] = rnd.Next(min, max);
+        }
+
+        public int Min
+        {
+            get
+            {
+                min = a[0, 0];
+                for (int i = 0; i < a.GetLength(0); i++)
+                    for (int j = 0; j < a.GetLength(1); j++)
+                        if (a[i, j] < min) min = a[i, j];
+                return min;
+            }
+        }
+
+        public int Max
+        {
+            get
+            {
+                max = a[0, 0];
+                for (int i = 0; i < a.GetLength(0); i++)
+                    for (int j = 0; j < a.GetLength(1); j++)
+                        if (a[i, j] > max) max = a[i, j];
+                return max;
+            }
+        }
+
+        public int Sum()
+        {
+            int sum = 0;
+            for (int i = 0; i < a.GetLength(0); i++)
+                for (int j = 0; j < a.GetLength(1); i++)
+                    sum += a[i, j];
+            return sum;
+        }
+
+        public int Sum(int from)
+        {
+            int sum = 0;
+            for (int i = 0; i < a.GetLength(0); i++)
+                for (int j = 0; j < a.GetLength(1); i++)
+                {
+                    if (a[i, j] > from)
+                        sum += a[i, j];
+                }
+            return sum;
+        }
+
+        public string MaxNum(ref string numMax)
+        {
+            numMax = "";
+            int max = 0;
+            for (int i = 0; i < a.GetLength(0); i++)
+                for (int j = 0; i < a.GetLength(0); i++)
+                    if (a[i, j] > max)
+                    {
+                        max = a[i, j];
+                        numMax = $"Номер максимального элемента массива a: {i}, {j}";
+                    }
+            return numMax;
+        }
+
+        public override string ToString ()
+        {
+            string s = "";
+            for (int i = 0; i < a.GetLength(0); i++)
+            {
+                for (int j = 0; j < a.GetLength(1); j++)
+                    s+=a[i,j] + " ";
+                s += "\n";
+            }
+            return s;
+        }
+
 
     }
 }
