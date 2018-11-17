@@ -31,25 +31,31 @@ namespace _2DimenArray
                     a[i, j] = rnd.Next(min, max);
         }
 
-        public TwoDimenArray(string fname)
+        public TwoDimenArray(string fname, out bool flag)
         {
-            StreamReader sr = new StreamReader(fname);
-
+            flag = false;
             try
             {
+                StreamReader sr = new StreamReader(fname);
                 string[] lines = File.ReadAllLines(fname);
-                a = new int[lines.Length, lines[0].Split(' ').Length];
+                a = new int[lines.Length, lines[0].Split(' ').Length-1];
                 for (int i = 0; i < lines.Length; i++)
                 {
                     string[] temp = lines[i].Split(' ');
-                    for (int j = 0; j < temp.Length; j++)
+                    for (int j = 0; j < temp.Length-1; j++)
                         a[i, j] = Convert.ToInt32(temp[j]);
                 }
+                flag = true;
+                sr.Close();
             }
-            catch (FileNotFoundException ex)
+            catch (FileNotFoundException e)
             {
-                My.TypeLine("Ошибка чтения файла, возможно указанный файл отсутствует!");
-                My.TypeLine($"{ex}");
+                My.TypeLineQuick("\nОшибка чтения файла, возможно указанный файл отсутствует!");
+                My.TypeLineQuick($"\n{e.Message}");
+                My.PauseMsg();
+                Console.Clear();
+                //Environment.Exit(0);
+                
             }
             
         }
@@ -97,6 +103,35 @@ namespace _2DimenArray
                         sum += a[i, j];
                 }
             return sum;
+        }
+
+        public void Write2File(string fname, out bool flag)
+        {
+            flag = false;
+            try
+            {
+                StreamWriter sw = new StreamWriter(fname);
+                for (int i = 0; i < a.GetLength(0); i++)
+                {
+                    for (int j = 0; j < a.GetLength(1); j++)
+                    {
+                        sw.Write(a[i, j] + " ");
+                    }
+                    if (i<a.GetLength(0)-1)
+                    sw.WriteLine();
+                }
+                sw.Close();
+                flag = true;
+            }
+            catch (Exception e)
+            {
+                My.TypeLine("Ошибка записи!\n" +
+                    " Возможно программа не было запущена с ПРАВАМИ АДМИНИСТРАТОРА...\n");
+                My.TypeLineQuick($"{e.Message}\n");
+                My.Exit();
+                Console.Clear();
+            }
+
         }
 
         public string MaxNum(out string numMax)

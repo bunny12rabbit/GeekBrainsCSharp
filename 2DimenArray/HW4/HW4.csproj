@@ -33,11 +33,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="2DimenArray">
+    <Reference Include="2DimenArray, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\2DimenArray\bin\Debug\2DimenArray.dll</HintPath>
     </Reference>
-    <Reference Include="MyMethods">
-      <HintPath>..\..\..\Lesson3\HW\MyMethods\bin\Debug\MyMethods.dll</HintPath>
+    <Reference Include="MyMethods, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\MyMethods.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

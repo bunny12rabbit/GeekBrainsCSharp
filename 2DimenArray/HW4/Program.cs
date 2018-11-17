@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MyMethods;
 using _2DimenArray;
+using System.IO;
 
 namespace HW4
 {
@@ -21,30 +22,46 @@ namespace HW4
     {
         static void Main(string[] args)
         {
-            string maxNum;
-            My.TypeLine($"Создайте файл с двумерным массивом, отделяя числа пробелом по адрессу C:\\input.txt\n");
+            string maxNum, fname = "C:\\array.txt";
+            bool flag = false;
+            My.TypeLine($"Пытаемся считать файл в массив по адрессу C:\\array.txt\n");
             My.PauseMsg();
-            TwoDimenArray array2 = new TwoDimenArray("D:\\input.txt");
-            My.TypeLine("Считывание из файла в массив а...");
-            My.LoadScreen(2000);
-            My.TypeLine("\n" + array2.ToString());
-            My.PauseMsg();
-
-            My.TypeLine("Введите размернсть массива: ");
-            int n = My.ForceReadInteger();
-            My.TypeLine("Введите диапозон чисел для случайной генерации массива:\n" +
-                "от ");
-            int from = My.ForceReadInteger();
-            My.TypeLine("до ");
-            int to = My.ForceReadInteger();
-            TwoDimenArray array = new TwoDimenArray(n, from, to);
-            int max = array.Max;
-            My.TypeLine($"Массив а:\n");
-            Console.WriteLine(array.ToString());
-            My.TypeLine($"Сумма всех элементов массива a больше 12: {array.Sum(12)}\n");
-            My.TypeLine($"Сумма всех элементов массива а: {array.Sum()}\n");
-            My.TypeLine($"Номер максимального элемента массива а: {array.MaxNum(out maxNum)}\n");
-            My.PauseMsg();
+            TwoDimenArray array = new TwoDimenArray(fname, out flag);
+            if (flag)
+            {
+                My.TypeLine("Считывание из файла в массив а...");
+                My.LoadScreen(2000);
+                My.TypeLine("\n" + array.ToString());
+                My.TypeLine($"Сумма всех элементов массива a больше 12: {array.Sum(12)}\n");
+                My.TypeLine($"Сумма всех элементов массива а: {array.Sum()}\n");
+                My.TypeLine($"Номер максимального элемента массива а: {array.MaxNum(out maxNum)}\n");
+                My.Exit();
+            }
+            else
+            {
+                My.TypeLine("\nВведите размернсть массива: ");
+                int n = My.ForceReadInteger();
+                My.TypeLine("Введите диапозон чисел для случайной генерации массива:\n" +
+                    "от ");
+                int from = My.ForceReadInteger();
+                My.TypeLine("до ");
+                int to = My.ForceReadInteger();
+                TwoDimenArray array2 = new TwoDimenArray(n, from, to);
+                int max = array2.Max;
+                My.TypeLine($"Массив а:\n");
+                Console.WriteLine(array2.ToString());
+                My.TypeLine($"Сумма всех элементов массива a больше 12: {array2.Sum(12)}\n");
+                My.TypeLine($"Сумма всех элементов массива а: {array2.Sum()}\n");
+                My.TypeLine($"Номер максимального элемента массива а: {array2.MaxNum(out maxNum)}\n");
+                My.TypeLine("Запись массива в файл С:\\array.txt...");
+                My.LoadScreen(2000);
+                array2.Write2File(fname, out flag);
+                if (flag)
+                {
+                    My.TypeLine("Запись успешно завершена!\n");
+                    My.Exit();
+                }
+            }
         }
     }
 }
