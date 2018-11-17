@@ -22,6 +22,13 @@ namespace HW4
         static void Main(string[] args)
         {
             string maxNum;
+            My.TypeLine($"Создайте файл с двумерным массивом, отделяя числа пробелом по адрессу C:\\input.txt\n");
+            My.PauseMsg();
+            TwoDimenArray array2 = new TwoDimenArray("D:\\input.txt");
+            My.TypeLine("Считывание из файла в массив а...");
+            My.LoadScreen(2000);
+            My.TypeLine("\n" + array2.ToString());
+            My.PauseMsg();
 
             My.TypeLine("Введите размернсть массива: ");
             int n = My.ForceReadInteger();

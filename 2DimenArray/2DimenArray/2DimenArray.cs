@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,29 @@ namespace _2DimenArray
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < n; j++)
                     a[i, j] = rnd.Next(min, max);
+        }
+
+        public TwoDimenArray(string fname)
+        {
+            StreamReader sr = new StreamReader(fname);
+
+            try
+            {
+                string[] lines = File.ReadAllLines(fname);
+                a = new int[lines.Length, lines[0].Split(' ').Length];
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    string[] temp = lines[i].Split(' ');
+                    for (int j = 0; j < temp.Length; j++)
+                        a[i, j] = Convert.ToInt32(temp[j]);
+                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                My.TypeLine("Ошибка чтения файла, возможно указанный файл отсутствует!");
+                My.TypeLine($"{ex}");
+            }
+            
         }
 
         public int Min
