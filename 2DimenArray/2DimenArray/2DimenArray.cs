@@ -54,11 +54,11 @@ namespace _2DimenArray
             }
         }
 
-        public int Sum()
+        public double Sum()
         {
-            int sum = 0;
+            double sum = 0;
             for (int i = 0; i < a.GetLength(0); i++)
-                for (int j = 0; j < a.GetLength(1); i++)
+                for (int j = 0; j < a.GetLength(1); j++)
                     sum += a[i, j];
             return sum;
         }
@@ -67,7 +67,7 @@ namespace _2DimenArray
         {
             int sum = 0;
             for (int i = 0; i < a.GetLength(0); i++)
-                for (int j = 0; j < a.GetLength(1); i++)
+                for (int j = 0; j < a.GetLength(1); j++)
                 {
                     if (a[i, j] > from)
                         sum += a[i, j];
@@ -75,16 +75,16 @@ namespace _2DimenArray
             return sum;
         }
 
-        public string MaxNum(ref string numMax)
+        public string MaxNum(out string numMax)
         {
             numMax = "";
-            int max = 0;
+            int max = a[0,0];
             for (int i = 0; i < a.GetLength(0); i++)
-                for (int j = 0; i < a.GetLength(0); i++)
+                for (int j = 0; j < a.GetLength(1); j++)
                     if (a[i, j] > max)
                     {
                         max = a[i, j];
-                        numMax = $"Номер максимального элемента массива a: {i}, {j}";
+                        numMax = $"{i.ToString()},  {j.ToString()}";
                     }
             return numMax;
         }
@@ -95,8 +95,8 @@ namespace _2DimenArray
             for (int i = 0; i < a.GetLength(0); i++)
             {
                 for (int j = 0; j < a.GetLength(1); j++)
-                    s+=a[i,j] + " ";
-                s += "\n";
+                    s += $"{a[i, j]}\t";
+            s += "\n";
             }
             return s;
         }
