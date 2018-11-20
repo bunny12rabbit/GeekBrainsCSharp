@@ -60,6 +60,33 @@ namespace _2DimenArray
             
         }
 
+        public TwoDimenArray(string fname)
+        {
+            try
+            {
+                StreamReader sr = new StreamReader(fname);
+                string[] lines = File.ReadAllLines(fname);
+                a = new int[lines.Length, lines[0].Split(' ').Length - 1];
+                for (int i = 0; i < lines.Length; i++)
+                {
+                    string[] temp = lines[i].Split(' ');
+                    for (int j = 0; j < temp.Length - 1; j++)
+                        a[i, j] = Convert.ToInt32(temp[j]);
+                }
+                sr.Close();
+            }
+            catch (FileNotFoundException e)
+            {
+                My.TypeLineQuick("\nОшибка чтения файла, возможно указанный файл отсутствует!");
+                My.TypeLineQuick($"\n{e.Message}");
+                My.PauseMsg();
+                Console.Clear();
+                //Environment.Exit(0);
+
+            }
+
+        }
+
         public int Min
         {
             get
@@ -104,6 +131,20 @@ namespace _2DimenArray
                 }
             return sum;
         }
+
+        public double Average
+        {
+            get
+            {
+                double sum = 0;
+                for (int i = 0; i < a.GetLength(0); i++)
+                    for (int j = 0; j < a.GetLength(1); j++)
+                        sum += a[i, j];
+                return sum / a.GetLength(0) / a.GetLength(1);
+            }
+
+        }
+
 
         public void Write2File(string fname, out bool flag)
         {
