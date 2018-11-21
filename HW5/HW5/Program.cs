@@ -26,8 +26,8 @@ namespace HW5
     struct Info
     {
         public string student;
-        public int grade1;
-        public int grade2;
+        public int grade1;  //Как инициализировать массив grades[] внутри структуры чтобы использовать массив [3] вместо 3х полей
+        public int grade2;  //с оценками? При заполнении info[] из файла ругается Ссылка на объект не указывает на экземпляр объекта
         public int grade3;
         public double Average
         {
@@ -49,7 +49,7 @@ namespace HW5
             int n;
             Info[] info;
             List<string> worse = new List<string>();
-            
+
 
             My.TypeLine("Добро пожаловать в программу по подсчету результатов экзаменов учениками!\n");
             Thread.Sleep(60);
@@ -78,17 +78,34 @@ namespace HW5
                 } while (!File.Exists(fname));
             }
             My.TypeLine("Файл успешно загружен!\n");
-            //try
-            //{
+            My.PauseMsg();
+            try
+            {
                 StreamReader sr = new StreamReader(fname);
-                n = int.Parse(sr.ReadLine());
-                info = new Info[n];
-            
+                if (int.TryParse(sr.ReadLine(), out n))
+                {
+                    if (n < 10 || n > 100)
+                    {
+                        ManualNumber(out n, out info);
+                    }
+                    else info = new Info[n];
+
+                }
+                else ManualNumber(out n, out info);
 
                 for (int i = 0; i < n; i++)
                 {
                     string[] sa = sr.ReadLine().Split(' ');
+                    if (sa[0].Length > 20)
+                    {
+                        sa[0] = sa[0].Remove(19);
+                    }
+                    if (sa[1].Length > 15)
+                    {
+                        sa[1] = sa[1].Remove(14);
+                    }
                     info[i].student = $"{sa[0]} {sa[1]}";
+
                     info[i].grade1 = int.Parse(sa[2]);
                     info[i].grade2 = int.Parse(sa[3]);
                     info[i].grade3 = int.Parse(sa[4]);
@@ -96,19 +113,24 @@ namespace HW5
                 sr.Close();
 
                 Sort(info);
-                My.TypeLine($"Худший ученик: {info[0].student} {info[0].Average}\n");
-            My.Exit();
-            //}
-            //catch (Exception e)
-            //{
-            //    My.TypeLineQuick($"Ой! Ошибка:\n" +
-            //        $"{e.Message}\n");
-            //    My.Exit();
-            //}
-            
+
+                My.TypeLine("Худшие 3 или более учеников по среднему баллу:\n");
+                Console.WriteLine();
+                Worse(ref info, ref worse);
+                PrintWorse(ref worse);
+                Console.WriteLine();
+                My.Exit();
+            }
+            catch (Exception e)
+            {
+                My.TypeLineQuick($"Ой! Ошибка:\n" +
+                    $"{e.Message}\n");
+                My.Exit();
+            }
+
         }
 
-        public static void Sort(Info[] info)
+        public static void Sort(Info[] info) //Сортируем пузырьком чтобы выделить 3х худших
         {
             for (int i = 0; i < info.Length; i++)
                 for (int j = 0; j < info.Length - 1; j++)
@@ -118,6 +140,37 @@ namespace HW5
                         info[j] = info[j + 1];
                         info[j + 1] = t;
                     }
+        }
+
+        public static void ManualNumber(out int n, out Info[] info)
+        {
+            My.TypeLine("Ошибка! Выход за пределы диапозона > 10 и < 100!\n" +
+                        "Введите вручную колличество учеников: ");
+            n = My.ForceReadInteger(10, 100);
+            info = new Info[n];
+        }
+
+        public static void Worse (ref Info[] info, ref List<string> worse) //Выделяем 3х худших
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                worse.Add($"{info[i].student}, средняя оценка: {info[i].Average}");
+            }
+            for (int i = 3; i < info.Length; i++)
+            {
+                if (info[i].Average <= info[2].Average)
+                {
+                    worse.Add($"{info[i].student}, средняя оценка: {info[i].Average}");
+                }
+            }
+        }
+
+        public static void PrintWorse(ref List<string> worse)
+        {
+            foreach (String s in worse)
+            {
+                My.TypeLine($"{s}\n");
+            }
         }
 
     }
